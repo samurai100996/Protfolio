@@ -2,7 +2,9 @@ import { useState, useEffect,useRef  } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { useNavigate } from 'react-router-dom';
+import logo from './assets/logo.png';
 import './App.css'
+import { Typewriter } from 'react-simple-typewriter';
 
 function App() {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -15,7 +17,7 @@ const videoRef = useRef(null);
  const greetings = [
     "• Hello",         // English
      "• 안녕",      // Korean
-     "• Bonjour",       // French
+    "• Bonjour",       // French
     "• Hola",          // Spanish
     "• Ciao",          // Italian
     "• こんにちは",    // Japanese
@@ -23,10 +25,10 @@ const videoRef = useRef(null);
     "• 你好",        // Chinese
     "• Guten Tag",     // German
     "• Merhaba",       // Turkish
-     "• Wassup",       // Turkish
+    "• Wassup",       // Turkish
     "• سَلَامٌ",        // Arabic
     "• Sawatdee",      // Thai
-     "• Merhaba",       // Turkish
+    "• Merhaba",       // Turkish
     "• Olá",           // Portuguese
     "• Здравствуйте",  // Russian
     "• Hallo"          // Dutch
@@ -39,19 +41,29 @@ const videoRef = useRef(null);
 
     return () => clearTimeout(firstWordTimer);
   }, []);
+useEffect(() => {
+  if (!firstWordShown) return; // Wait until first word is shown
 
-  // Rapid word changes after first word
-  useEffect(() => {
-    // Skip this effect until first word has been shown
-    if (!firstWordShown) return;
+  let intervalId;
+  let timeoutId;
 
-    // Extremely fast changes for all words after the first
-    const rapidChangeInterval = setInterval(() => {
+  if (greetingIndex === greetings.length - 1) {
+    // At last word, slow down
+    timeoutId = setTimeout(() => {
+      setGreetingIndex(0); // Restart from beginning after pause
+    }, 2000); // 2 seconds pause at last word
+  } else {
+    // Fast cycling for other words
+    intervalId = setInterval(() => {
       setGreetingIndex(prevIndex => (prevIndex + 1) % greetings.length);
-    }, 150); // Super fast - 150ms per word
+    }, 150); // 150ms fast
+  }
 
-    return () => clearInterval(rapidChangeInterval);
-  }, [firstWordShown]);
+  return () => {
+    clearInterval(intervalId);
+    clearTimeout(timeoutId);
+  };
+}, [greetingIndex, firstWordShown]);
 
   // Track scroll position
   useEffect(() => {
@@ -95,7 +107,9 @@ const handleHomeClick = () => {
       {/* Transparent Header */}
       <header className={`transparent-header ${headerVisible ? 'visible' : ''}`}>
         <nav>
-          <div className="logo">[Your Logo]</div>
+         <div className="logo">
+        <img src={logo} alt="Logo" />
+        </div>
           <ul className="nav-links">
             <li onClick={handleHomeClick}>Home</li>
             <li>About</li>
@@ -116,11 +130,17 @@ const handleHomeClick = () => {
             muted
             className="background-video"
           ></video>
+          
           <div className="greeting-container">
             <div className="greeting-text">
-              <span className={`greeting-word ${!firstWordShown && greetingIndex === 0 ? 'fade-in' : 'instant'}`}>
-                {greetings[greetingIndex]}
-              </span>
+            <span
+  className={`greeting-word ${
+    greetingIndex === greetings.length - 1 ? 'fade-out' :
+    (!firstWordShown && greetingIndex === 0 ? 'fade-in' : 'instant')
+  }`}
+>
+  {greetings[greetingIndex]}
+</span>
             </div>
           </div>
           <div className="scroll">
@@ -129,11 +149,23 @@ const handleHomeClick = () => {
         </div>
         <div className={`introduction ${scrollPosition > 50 ? 'visible' : ''}`}>
           <div className="intro-content">
-            <h1 className="animate-up">Hi, I'm [Your Name]</h1>
+            <h1 className="animate-up">
+              Hi, I'm <span className="special-font">Saurabh</span>
+            </h1>
             <p className="animate-up delay-1">
-              I'm a [Your Profession] with a passion for [Your Interests]. I love
-              creating [Your Work/Projects].
-            </p>
+  {' '}
+  <span style={{ color: '#ff6f61', fontWeight: 'bold' }}>
+    <Typewriter
+      words={['Photographer', 'Videographer', 'Content Creator', 'Curiographer']}
+      loop={0} // 0 for infinite loop
+      cursor
+      cursorStyle="_"
+      typeSpeed={20} // typing speed (lower = faster)
+      deleteSpeed={5} // deleting speed (lower = faster)
+      delaySpeed={190} // delay before starting new word (lower = faster)
+    />
+  </span>
+</p>
           </div>
         </div>
       </div>

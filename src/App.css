@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+    overflow-x: hidden;
 }
 .scroll {
   position: absolute;
@@ -39,6 +40,20 @@ body {
   width: 100vw;
   position: relative;
 }
+.greeting-word.fade-out {
+  animation: fadeOut 1.5s ease forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
 
 /* Transparent Header */
 .transparent-header {
@@ -64,36 +79,48 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: bl;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+  padding-top: 20px; ;
+  width: 150px;
+  /* fixed width */
+  height: 100px;
+  /* fixed height */
+  overflow: hidden;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+  padding-bottom: 0.8rem;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding-bottom: 04rem
 }
 
 .nav-links li {
+  color: black;
   margin-left: 2rem;
   cursor: pointer;
   position: relative;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.7rem;
 }
 
 .nav-links li:after {
   content: '';
   position: absolute;
   width: 0;
-  height: 2px;
+  height: 1px;
   bottom: 0;
   left: 0;
-  background-color: white;
+  color: black;
+  background-color: black;
   transition: width 0.3s;
 }
 
@@ -122,6 +149,17 @@ nav {
   transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
   will-change: transform;
 }
+.special-font {
+  font-family: 'Great Vibes',
+    cursive;
+  /* Change to your font */
+  font-weight: bold;
+  /* Optional: make it bolder */
+}
+.special-font {
+  font-family: ''Great Vibes', cursive', cursive;
+}
+
 
 .home.scrolled {
   transform: translateY(-100vh);
@@ -144,7 +182,7 @@ nav {
 @keyframes fadeInVideo {
   0% {
     opacity: 0;
-    background-color: black;
+    background-color: white;
     /* To make sure it starts from black */
   }
 
@@ -222,8 +260,8 @@ nav {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: black;
-    color: white;
+    background-color: rgb(255, 251, 232);
+    color: black;
     transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
     will-change: transform;
     z-index: 2;
